@@ -1,0 +1,14 @@
+CFG Untuk menerima persamaan matematis
+(non imajiner/kompleks)
+
+S -> E
+A -> 0, XP
+B -> PY
+C -> A, A.B, N, (N)
+E -> COE, (COE), (COE)OE, C
+N -> -XP, -A.B
+O -> +, -, *, /, ^
+P -> YP, epsilon
+X -> 1, 2, 3, 4, 5, 6, 7, 8, 9
+Y -> 0, X
+
