@@ -28,7 +28,7 @@ void funcExpression1(char s[], int *letak, boolean *berhasil, long double *hasil
     // E -> TE'
     int letakAwal = *letak;
     funcTerm1(s, letak, berhasil, hasilHitung);
-    if (berhasil)
+    if (*berhasil)
     {
         funcExpression2(s, letak, berhasil, hasilHitung);
     }
@@ -50,7 +50,7 @@ void funcExpression2(char s[], int *letak, boolean *berhasil, long double *hasil
         long double temp = 0;
         funcTerm1(s, letak, berhasil, &temp);
         *hasilHitung -= temp;
-        if (berhasil)
+        if (*berhasil)
         {
             funcExpression2(s, letak, berhasil, hasilHitung);
         }
@@ -62,7 +62,7 @@ void funcExpression2(char s[], int *letak, boolean *berhasil, long double *hasil
         long double temp = 0;
         funcTerm1(s, letak, berhasil, &temp);
         *hasilHitung += temp;
-        if (berhasil)
+        if (*berhasil)
         {
             funcExpression2(s, letak, berhasil, hasilHitung);
         }
@@ -79,7 +79,7 @@ void funcTerm1(char s[], int *letak, boolean *berhasil, long double *hasilHitung
     // T -> FT'
     int letakAwal = *letak;
     funcFactor1(s, letak, berhasil, hasilHitung);
-    if (berhasil)
+    if (*berhasil)
     {
         funcTerm2(s, letak, berhasil, hasilHitung);
     }
@@ -101,7 +101,7 @@ void funcTerm2(char s[], int *letak, boolean *berhasil, long double *hasilHitung
         long double temp = 0;
         funcFactor1(s, letak, berhasil, &temp);
         *hasilHitung *= temp;
-        if (berhasil)
+        if (*berhasil)
         {
             funcTerm2(s, letak, berhasil, hasilHitung);
         }
@@ -113,7 +113,7 @@ void funcTerm2(char s[], int *letak, boolean *berhasil, long double *hasilHitung
         long double temp = 0;
         funcFactor1(s, letak, berhasil, &temp);
         *hasilHitung /= temp;
-        if (berhasil)
+        if (*berhasil)
         {
             funcTerm2(s, letak, berhasil, hasilHitung);
         }
@@ -170,7 +170,7 @@ void funcFactor1(char s[], int *letak, boolean *berhasil, long double *hasilHitu
         // (E)F'
         *letak += 1;
         funcExpression1(s, letak, berhasil, hasilHitung);
-        if (berhasil)
+        if (*berhasil)
         {
             *letak += 1;
             funcFactor2(s, letak, berhasil, hasilHitung);
@@ -184,7 +184,7 @@ void funcFactor1(char s[], int *letak, boolean *berhasil, long double *hasilHitu
     {
         // BF'
         funcBilangan(s, letak, berhasil, hasilHitung);
-        if (berhasil)
+        if (*berhasil)
         {
             funcFactor2(s, letak, berhasil, hasilHitung);
         }
@@ -246,7 +246,7 @@ void funcBilangan(char s[], int *letak, boolean *berhasil, long double *hasilHit
     int letakAwal = *letak;
     long int temp1 = 0;
     funcUnsigned(s, letak, berhasil, &temp1);
-    if (berhasil)
+    if (*berhasil)
     {
         *hasilHitung = (long double)temp1;
         char c = s[*letak];
@@ -256,7 +256,7 @@ void funcBilangan(char s[], int *letak, boolean *berhasil, long double *hasilHit
             *letak += 1;
             long int temp2 = 0;
             funcUnsigned(s, letak, berhasil, &temp2);
-            if (berhasil)
+            if (*berhasil)
             {
                 cekPanjang = *letak - cekPanjang;
                 long double bilKoma = temp2;
@@ -278,7 +278,7 @@ void funcUnsigned(char s[], int *letak, boolean *berhasil, long int *hasilHitung
     int temp = 0;
     funcDigit(s, letak, berhasil, &temp);
     boolean dummy = true;
-    while (dummy && berhasil)
+    while (dummy && *berhasil)
     {
         *hasilHitung *= 10;
         *hasilHitung += temp;
@@ -304,19 +304,21 @@ void funcDigit(char s[], int *letak, boolean *berhasil, int *hasilHitung)
 
 int main()
 {
-    printf("Masukan string : ");
-    char s[100];
-    scanf("%s", s);
-    long double hasil = 0;
-    int letak = 0;
-    boolean berhasil;
-    funcExpression1(s, &letak, &berhasil, &hasil);
-    if (berhasil && letak==strlen(s))
-    {
-        printf("%.15Lf\n", hasil);
-    }
-    else
-    {
-        printf("gagal, lol\n.");
+    char s[100] = "";
+    while(strcmp(s,"exit")){
+        printf("Masukan string : ");
+        scanf("%s", s);
+        long double hasil = 0;
+        int letak = 0;
+        boolean berhasil;
+        funcExpression1(s, &letak, &berhasil, &hasil);
+        if (berhasil && letak==strlen(s))
+        {
+            printf("%.15Lf\n", hasil);
+        }
+        else
+        {
+            printf("gagal, lol\n.");
+        }
     }
 }
