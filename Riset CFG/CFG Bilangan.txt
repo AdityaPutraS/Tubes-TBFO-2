@@ -15,6 +15,8 @@ U -> D | UD //Ini gapapa left recursive
 D -> 0 | 1 | 2 | 3 | 4 | 5 
         | 6 | 7 | 8 | 9
 
+-----------------------------------------------
+
 Baru : (2--3 gaboleh)
 Non - Left Recursive
 S -> E
@@ -39,10 +41,35 @@ U -> D | UD
 D -> 0 | 1 | 2 | 3 | 4 | 5 
         | 6 | 7 | 8 | 9
 
+--------------------------------------------------
+
+Lebih Baru : Complex Number boleh
+Non - Left Recursive
+S -> E
+E -> TE' | -TE'
+E'-> -TE' | +TE' | epsilon
+T -> FT'
+T'-> *FT' | /FT' | epsilon
+F -> CF' | (E)F'
+F'-> ^(E)F' | ^CF' | epsilon
+C -> B | Bi
+B -> U | U.U
+U -> D | UD //Ini gapapa left recursive
+D -> 0 | 1 | 2 | 3 | 4 | 5 
+        | 6 | 7 | 8 | 9
+
+Catatan :
+        E = Expression
+        T = Term
+        F = Factor
+        C = Complex Number (Real + Imaginer)
+        B = Bilangan
+        U = Unsigned (positif & 0)
+        D = Digit (0 - 9)
 
 Test :
-2+-3 // Not AC Harusnya
-2--3 // Not AC Harusnya
+2+-3
+2--3
 1^(-12.33+(-3))
 -3
 (-3)
