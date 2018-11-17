@@ -1,6 +1,8 @@
 CFG Untuk menerima persamaan matematis
 (non imajiner/kompleks)
 
+Lama : (2--3 boleh)
+Non - Left Recursive
 S -> E
 E -> TE'
 E'-> -TE' | +TE' | epsilon
@@ -9,33 +11,41 @@ T'-> *FT' | /FT' | epsilon
 F -> BF' | -BF' | (E)F' | -(E)F'
 F'-> ^(E)F' | ^BF' | ^-BF' | epsilon
 B -> U | U.U
-U -> D | UD
-U'-> DU' | epsilon
+U -> D | UD //Ini gapapa left recursive
 D -> 0 | 1 | 2 | 3 | 4 | 5 
         | 6 | 7 | 8 | 9
 
-String yang diaccept:
-2+(3*4)-5^0.0005
-3+(2*3)+3*(2+1)
-(-457.01+1280)*(35.7-11.0233)/(-6.1450)
-(2+2)-3
-0+(-3)
-1000000+2
-1+(-0.00001)
-(-0.1111101)
-30.1213
-3
--3.00
--55.0000003
-(-0.3)
-2+(2+3-(2*2))+5
+Baru : (2--3 gaboleh)
+Non - Left Recursive
+S -> E
+E -> TE' | -TE'
+E'-> -TE' | +TE' | epsilon
+T -> FT'
+T'-> *FT' | /FT' | epsilon
+F -> BF' | (E)F'
+F'-> ^(E)F' | ^BF' | epsilon
+B -> U | U.U
+U -> D | UD //Ini gapapa left recursive
+D -> 0 | 1 | 2 | 3 | 4 | 5 
+        | 6 | 7 | 8 | 9
 
-String yang ditolak:
-Belum di Bek
+Left - Recursive
+S -> E
+E -> E-T | E+T | T | -T
+T -> T*F | T/F | F
+F -> F^(E) | F^B | B | (E)
+B -> U | U.U
+U -> D | UD
+D -> 0 | 1 | 2 | 3 | 4 | 5 
+        | 6 | 7 | 8 | 9
 
 
 Test :
-AB
+2+-3 // Not AC Harusnya
+2--3 // Not AC Harusnya
+1^(-12.33+(-3))
+-3
+(-3)
 3+4*2/(1-5)^2^3
 3+4*2
 1/(3+2)
