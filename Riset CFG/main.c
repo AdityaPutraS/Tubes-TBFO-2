@@ -4,16 +4,16 @@
 #include <complex.h>
 #include "boolean.h"
 
-void funcExpression1(char s[], int *letak, boolean *berhasil, long double complex *hasilHitung);
-void funcExpression2(char s[], int *letak, boolean *berhasil, long double complex *hasilHitung);
-void funcTerm1(char s[], int *letak, boolean *berhasil, long double complex *hasilHitung);
-void funcTerm2(char s[], int *letak, boolean *berhasil, long double complex *hasilHitung);
-void funcFactor1(char s[], int *letak, boolean *berhasil, long double complex *hasilHitung);
-void funcFactor2(char s[], int *letak, boolean *berhasil, long double complex *hasilHitung);
-void funcComplex(char s[], int *letak, boolean *berhasil, long double complex *hasilHitung);
-void funcBilangan(char s[], int *letak, boolean *berhasil, long double complex *hasilHitung);
-void funcUnsigned(char s[], int *letak, boolean *berhasil, long int *hasilHitung);
-void funcDigit(char s[], int *letak, boolean *berhasil, int *hasilHitung);
+void funcExpression1(char s[], int *letak, boolean *berhasil, boolean *mathError, long double complex *hasilHitung);
+void funcExpression2(char s[], int *letak, boolean *berhasil, boolean *mathError, long double complex *hasilHitung);
+void funcTerm1(char s[], int *letak, boolean *berhasil, boolean *mathError, long double complex *hasilHitung);
+void funcTerm2(char s[], int *letak, boolean *berhasil, boolean *mathError, long double complex *hasilHitung);
+void funcFactor1(char s[], int *letak, boolean *berhasil, boolean *mathError, long double complex *hasilHitung);
+void funcFactor2(char s[], int *letak, boolean *berhasil, boolean *mathError, long double complex *hasilHitung);
+void funcComplex(char s[], int *letak, boolean *berhasil, boolean *mathError, long double complex *hasilHitung);
+void funcBilangan(char s[], int *letak, boolean *berhasil, boolean *mathError, long double complex *hasilHitung);
+void funcUnsigned(char s[], int *letak, boolean *berhasil, boolean *mathError, long int *hasilHitung);
+void funcDigit(char s[], int *letak, boolean *berhasil, boolean *mathError, int *hasilHitung);
 
 int to_int(char c)
 {
@@ -25,7 +25,7 @@ boolean isDigit(char c)
     return (c >= '0') && (c <= '9');
 }
 
-void funcExpression1(char s[], int *letak, boolean *berhasil, long double complex *hasilHitung)
+void funcExpression1(char s[], int *letak, boolean *berhasil, boolean *mathError, long double complex *hasilHitung)
 {
     // E -> TE' | -TE'
     int letakAwal = *letak;
@@ -35,11 +35,11 @@ void funcExpression1(char s[], int *letak, boolean *berhasil, long double comple
         // -TE'
         *letak += 1;
         long double complex temp = 0;
-        funcTerm1(s, letak, berhasil, &temp);
+        funcTerm1(s, letak, berhasil, mathError, &temp);
         if (*berhasil)
         {
             *hasilHitung = -1 * temp;
-            funcExpression2(s, letak, berhasil, hasilHitung);
+            funcExpression2(s, letak, berhasil, mathError, hasilHitung);
         }
         else
         {
@@ -50,11 +50,11 @@ void funcExpression1(char s[], int *letak, boolean *berhasil, long double comple
     {
         // TE'
         long double complex temp = 0;
-        funcTerm1(s, letak, berhasil, &temp);
+        funcTerm1(s, letak, berhasil, mathError, &temp);
         if (*berhasil)
         {
             *hasilHitung = temp;
-            funcExpression2(s, letak, berhasil, hasilHitung);
+            funcExpression2(s, letak, berhasil, mathError, hasilHitung);
         }
         else
         {
@@ -63,7 +63,7 @@ void funcExpression1(char s[], int *letak, boolean *berhasil, long double comple
     }
 }
 
-void funcExpression2(char s[], int *letak, boolean *berhasil, long double complex *hasilHitung)
+void funcExpression2(char s[], int *letak, boolean *berhasil, boolean *mathError, long double complex *hasilHitung)
 {
     //E' -> -TE' | +TE' | epsilon
     int letakAwal = *letak;
@@ -73,11 +73,11 @@ void funcExpression2(char s[], int *letak, boolean *berhasil, long double comple
         // -TE'
         *letak += 1;
         long double complex temp = *hasilHitung;
-        funcTerm1(s, letak, berhasil, &temp);
+        funcTerm1(s, letak, berhasil, mathError, &temp);
         if (*berhasil)
         {
             *hasilHitung -= temp;
-            funcExpression2(s, letak, berhasil, hasilHitung);
+            funcExpression2(s, letak, berhasil, mathError, hasilHitung);
         }
         else
         {
@@ -89,11 +89,11 @@ void funcExpression2(char s[], int *letak, boolean *berhasil, long double comple
         // +TE'
         *letak += 1;
         long double complex temp = *hasilHitung;
-        funcTerm1(s, letak, berhasil, &temp);
+        funcTerm1(s, letak, berhasil, mathError, &temp);
         if (*berhasil)
         {
             *hasilHitung += temp;
-            funcExpression2(s, letak, berhasil, hasilHitung);
+            funcExpression2(s, letak, berhasil, mathError, hasilHitung);
         }
         else
         {
@@ -107,16 +107,16 @@ void funcExpression2(char s[], int *letak, boolean *berhasil, long double comple
     }
 }
 
-void funcTerm1(char s[], int *letak, boolean *berhasil, long double complex *hasilHitung)
+void funcTerm1(char s[], int *letak, boolean *berhasil, boolean *mathError, long double complex *hasilHitung)
 {
     // T -> FT'
     int letakAwal = *letak;
     long double complex temp = 0;
-    funcFactor1(s, letak, berhasil, &temp);
+    funcFactor1(s, letak, berhasil, mathError, &temp);
     if (*berhasil)
     {
         *hasilHitung = temp;
-        funcTerm2(s, letak, berhasil, hasilHitung);
+        funcTerm2(s, letak, berhasil, mathError, hasilHitung);
     }
     else
     {
@@ -124,7 +124,7 @@ void funcTerm1(char s[], int *letak, boolean *berhasil, long double complex *has
     }
 }
 
-void funcTerm2(char s[], int *letak, boolean *berhasil, long double complex *hasilHitung)
+void funcTerm2(char s[], int *letak, boolean *berhasil, boolean *mathError, long double complex *hasilHitung)
 {
     // T'-> *FT' | /FT' | epsilon
     int letakAwal = *letak;
@@ -134,11 +134,11 @@ void funcTerm2(char s[], int *letak, boolean *berhasil, long double complex *has
         // *FT'
         *letak += 1;
         long double complex temp = *hasilHitung;
-        funcFactor1(s, letak, berhasil, &temp);
+        funcFactor1(s, letak, berhasil, mathError, &temp);
         if (*berhasil)
         {
             *hasilHitung *= temp;
-            funcTerm2(s, letak, berhasil, hasilHitung);
+            funcTerm2(s, letak, berhasil, mathError, hasilHitung);
         }
     }
     else if (c == '/')
@@ -146,11 +146,18 @@ void funcTerm2(char s[], int *letak, boolean *berhasil, long double complex *has
         // /FT'
         *letak += 1;
         long double complex temp = *hasilHitung;
-        funcFactor1(s, letak, berhasil, &temp);
+        funcFactor1(s, letak, berhasil, mathError, &temp);
         if (*berhasil)
         {
-            *hasilHitung /= temp;
-            funcTerm2(s, letak, berhasil, hasilHitung);
+            if (temp != 0)
+            {
+                *hasilHitung /= temp;
+                funcTerm2(s, letak, berhasil, mathError, hasilHitung);
+            }
+            else
+            {
+                *mathError = true;
+            }
         }
     }
     else
@@ -160,7 +167,7 @@ void funcTerm2(char s[], int *letak, boolean *berhasil, long double complex *has
     }
 }
 
-void funcFactor1(char s[], int *letak, boolean *berhasil, long double complex *hasilHitung)
+void funcFactor1(char s[], int *letak, boolean *berhasil, boolean *mathError, long double complex *hasilHitung)
 {
     // F -> CF' | (E)F'
     int letakAwal = *letak;
@@ -170,12 +177,12 @@ void funcFactor1(char s[], int *letak, boolean *berhasil, long double complex *h
         // (E)F'
         *letak += 1;
         long double complex temp = 0;
-        funcExpression1(s, letak, berhasil, &temp);
+        funcExpression1(s, letak, berhasil, mathError, &temp);
         if (*berhasil)
         {
             *letak += 1;
             *hasilHitung = temp;
-            funcFactor2(s, letak, berhasil, hasilHitung);
+            funcFactor2(s, letak, berhasil, mathError, hasilHitung);
         }
         else
         {
@@ -186,11 +193,11 @@ void funcFactor1(char s[], int *letak, boolean *berhasil, long double complex *h
     {
         // BF'
         long double complex temp = 0;
-        funcComplex(s, letak, berhasil, &temp);
+        funcComplex(s, letak, berhasil, mathError, &temp);
         if (*berhasil)
         {
             *hasilHitung = temp;
-            funcFactor2(s, letak, berhasil, hasilHitung);
+            funcFactor2(s, letak, berhasil, mathError, hasilHitung);
         }
         else
         {
@@ -199,7 +206,7 @@ void funcFactor1(char s[], int *letak, boolean *berhasil, long double complex *h
     }
 }
 
-void funcFactor2(char s[], int *letak, boolean *berhasil, long double complex *hasilHitung)
+void funcFactor2(char s[], int *letak, boolean *berhasil, boolean *mathError, long double complex *hasilHitung)
 {
     // F'-> ^(E)F' | ^CF' | epsilon
     int letakAwal = *letak;
@@ -212,9 +219,9 @@ void funcFactor2(char s[], int *letak, boolean *berhasil, long double complex *h
             // ^(E)F'
             long double complex temp = 0;
             *letak += 2;
-            funcExpression1(s, letak, berhasil, &temp);
+            funcExpression1(s, letak, berhasil, mathError, &temp);
             *letak += 1;
-            funcFactor2(s, letak, berhasil, &temp);
+            funcFactor2(s, letak, berhasil, mathError, &temp);
             *hasilHitung = cpowl(*hasilHitung, temp);
         }
         else
@@ -222,8 +229,8 @@ void funcFactor2(char s[], int *letak, boolean *berhasil, long double complex *h
             // ^BF'
             long double complex temp = 0;
             *letak += 1;
-            funcComplex(s, letak, berhasil, &temp);
-            funcFactor2(s, letak, berhasil, &temp);
+            funcComplex(s, letak, berhasil, mathError, &temp);
+            funcFactor2(s, letak, berhasil, mathError, &temp);
             *hasilHitung = cpowl(*hasilHitung, temp);
         }
     }
@@ -234,20 +241,22 @@ void funcFactor2(char s[], int *letak, boolean *berhasil, long double complex *h
     }
 }
 
-void funcComplex(char s[], int *letak, boolean *berhasil, long double complex *hasilHitung)
+void funcComplex(char s[], int *letak, boolean *berhasil, boolean *mathError, long double complex *hasilHitung)
 {
     // C -> B | Bi
     int letakAwal = *letak;
     long double complex temp = 0;
-    funcBilangan(s, letak, berhasil, &temp);
+    funcBilangan(s, letak, berhasil, mathError, &temp);
     if (*berhasil)
     {
         char c = s[*letak];
-        if(c == 'i')
+        if (c == 'i')
         {
             *letak += 1;
             *hasilHitung = temp * I;
-        }else{
+        }
+        else
+        {
             *hasilHitung = temp;
         }
     }
@@ -257,12 +266,12 @@ void funcComplex(char s[], int *letak, boolean *berhasil, long double complex *h
     }
 }
 
-void funcBilangan(char s[], int *letak, boolean *berhasil, long double complex *hasilHitung)
+void funcBilangan(char s[], int *letak, boolean *berhasil, boolean *mathError, long double complex *hasilHitung)
 {
     // B -> U | U.U
     int letakAwal = *letak;
     long int temp1 = 0;
-    funcUnsigned(s, letak, berhasil, &temp1);
+    funcUnsigned(s, letak, berhasil, mathError, &temp1);
     if (*berhasil)
     {
         *hasilHitung = (long double complex)temp1;
@@ -272,7 +281,7 @@ void funcBilangan(char s[], int *letak, boolean *berhasil, long double complex *
             int cekPanjang = *letak;
             *letak += 1;
             long int temp2 = 0;
-            funcUnsigned(s, letak, berhasil, &temp2);
+            funcUnsigned(s, letak, berhasil, mathError, &temp2);
             if (*berhasil)
             {
                 cekPanjang = *letak - cekPanjang;
@@ -288,23 +297,23 @@ void funcBilangan(char s[], int *letak, boolean *berhasil, long double complex *
     }
 }
 
-void funcUnsigned(char s[], int *letak, boolean *berhasil, long int *hasilHitung)
+void funcUnsigned(char s[], int *letak, boolean *berhasil, boolean *mathError, long int *hasilHitung)
 {
     // U -> D | DU
     int letakAwal = *letak;
     int temp = 0;
-    funcDigit(s, letak, berhasil, &temp);
+    funcDigit(s, letak, berhasil, mathError, &temp);
     boolean dummy = true;
     while (dummy && *berhasil)
     {
         *hasilHitung *= 10;
         *hasilHitung += temp;
         *letak += 1;
-        funcDigit(s, letak, &dummy, &temp);
+        funcDigit(s, letak, &dummy, mathError, &temp);
     }
 }
 
-void funcDigit(char s[], int *letak, boolean *berhasil, int *hasilHitung)
+void funcDigit(char s[], int *letak, boolean *berhasil, boolean *mathError, int *hasilHitung)
 {
     // D -> 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
     char cek = s[*letak];
@@ -323,34 +332,48 @@ void eval(char s[])
 {
     long double complex hasil = 0;
     int letak = 0;
-    boolean berhasil;
-    funcExpression1(s, &letak, &berhasil, &hasil);
+    boolean berhasil = true, mathError = false;
+    funcExpression1(s, &letak, &berhasil, &mathError, &hasil);
     if (berhasil && letak == strlen(s))
     {
-        long double realPart = creall(hasil);
-        long double imagPart = cimagl(hasil);
-        printf("%s = ", s);
-        if (realPart != 0)
+        if (!mathError)
         {
-            if (imagPart != 0)
+            long double realPart = creall(hasil);
+            long double imagPart = cimagl(hasil);
+            printf("%s = ", s);
+            if (realPart != 0)
             {
-                printf("%.15Lf + %.15Lfi\n", realPart, imagPart);
+                if (imagPart != 0)
+                {
+                    printf("%.15Lf ", realPart);
+                    if(imagPart < 0){
+                        printf("-");
+                        imagPart *= -1;
+                    }else{
+                        printf("+");
+                    }
+                    printf(" %.15Lfi\n", imagPart);
+                }
+                else
+                {
+                    printf("%.15Lf\n", realPart);
+                }
             }
             else
             {
-                printf("%.15Lf\n", realPart);
+                if (imagPart != 0)
+                {
+                    printf("%.15Lf i\n", imagPart);
+                }
+                else
+                {
+                    printf("0\n");
+                }
             }
         }
         else
         {
-            if (imagPart != 0)
-            {
-                printf("%.15Lf i\n", imagPart);
-            }
-            else
-            {
-                printf("0\n");
-            }
+            printf("%s = Math Error!\n", s);
         }
     }
     else
