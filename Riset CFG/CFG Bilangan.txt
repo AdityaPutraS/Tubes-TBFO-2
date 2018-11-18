@@ -58,6 +58,23 @@ U -> D | UD //Ini gapapa left recursive
 D -> 0 | 1 | 2 | 3 | 4 | 5 
         | 6 | 7 | 8 | 9
 
+Lebih Lebih Baru : Trigonometry bois
+Non - Left Recursive
+S -> E
+E -> TE' | -TE'
+E'-> -TE' | +TE' | epsilon
+T -> FT'
+T'-> *FT' | /FT' | epsilon
+F -> MF'
+F'-> ^MF' | epsilon
+M -> sin(E) | cos(E) | tan(E) | 
+     asin(E) | acos(E) | atan(E) | (E) | C
+C -> B | Bi | i
+B -> U | U.U
+U -> D | UD //Ini gapapa left recursive
+D -> 0 | 1 | 2 | 3 | 4 | 5 
+        | 6 | 7 | 8 | 9
+
 Catatan :
         E = Expression
         T = Term
@@ -68,7 +85,9 @@ Catatan :
         D = Digit (0 - 9)
 
 Test :
-Bisa (24 Testcase) :
+Bisa (27 Testcase) :
+sin((3)+2i-50)
+(sin(cos((3+2))))
 (-1)^(0.5)
 (-5)^(0.5)+1-3^(-2i)
 (5)^(2i)
