@@ -243,26 +243,33 @@ void funcFactor2(char s[], int *letak, boolean *berhasil, boolean *mathError, lo
 
 void funcComplex(char s[], int *letak, boolean *berhasil, boolean *mathError, long double complex *hasilHitung)
 {
-    // C -> B | Bi
+    // C -> B | Bi | i
     int letakAwal = *letak;
     long double complex temp = 0;
-    funcBilangan(s, letak, berhasil, mathError, &temp);
-    if (*berhasil)
+    char cekI = s[*letak];
+    if(cekI == 'i')
     {
-        char c = s[*letak];
-        if (c == 'i')
+        *letak += 1;
+        *hasilHitung = I;
+    }else{
+        funcBilangan(s, letak, berhasil, mathError, &temp);
+        if (*berhasil)
         {
-            *letak += 1;
-            *hasilHitung = temp * I;
+            char c = s[*letak];
+            if (c == 'i')
+            {
+                *letak += 1;
+                *hasilHitung = temp * I;
+            }
+            else
+            {
+                *hasilHitung = temp;
+            }
         }
         else
         {
-            *hasilHitung = temp;
+            *letak = letakAwal;
         }
-    }
-    else
-    {
-        *letak = letakAwal;
     }
 }
 
