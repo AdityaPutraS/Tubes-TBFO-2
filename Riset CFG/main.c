@@ -12,12 +12,13 @@ void funcFactor1(char s[], int *letak, boolean *berhasil, boolean *mathError, lo
 void funcFactor2(char s[], int *letak, boolean *berhasil, boolean *mathError, long double complex *hasilHitung);
 void funcComplex(char s[], int *letak, boolean *berhasil, boolean *mathError, long double complex *hasilHitung);
 void funcBilangan(char s[], int *letak, boolean *berhasil, boolean *mathError, long double complex *hasilHitung);
-void funcUnsigned(char s[], int *letak, boolean *berhasil, boolean *mathError, long int *hasilHitung);
-void funcDigit(char s[], int *letak, boolean *berhasil, boolean *mathError, int *hasilHitung);
+void funcUnsigned(char s[], int *letak, boolean *berhasil, boolean *mathError, long double complex *hasilHitung);
+void funcDigit(char s[], int *letak, boolean *berhasil, boolean *mathError, long double complex *hasilHitung);
 
-int to_int(char c)
+long double complex to_ldc(char c)
 {
-    return c - '0';
+    int angka = c - '0';
+    return (angka+0*I);
 }
 
 boolean isDigit(char c)
@@ -38,7 +39,7 @@ void funcExpression1(char s[], int *letak, boolean *berhasil, boolean *mathError
         funcTerm1(s, letak, berhasil, mathError, &temp);
         if (*berhasil)
         {
-            *hasilHitung = -1 * temp;
+            *hasilHitung = (0+0*I) - temp;
             funcExpression2(s, letak, berhasil, mathError, hasilHitung);
         }
         else
@@ -277,6 +278,7 @@ void funcComplex(char s[], int *letak, boolean *berhasil, boolean *mathError, lo
     char cekI = s[*letak];
     if (cekI == 'i')
     {
+        *berhasil = true;
         *letak += 1;
         *hasilHitung = I;
     }
@@ -293,7 +295,7 @@ void funcComplex(char s[], int *letak, boolean *berhasil, boolean *mathError, lo
             }
             else
             {
-                *hasilHitung = temp;
+                *hasilHitung = temp + 0*I;
             }
         }
         else
@@ -307,17 +309,17 @@ void funcBilangan(char s[], int *letak, boolean *berhasil, boolean *mathError, l
 {
     // B -> U | U.U
     int letakAwal = *letak;
-    long int temp1 = 0;
+    long double complex temp1 = 0;
     funcUnsigned(s, letak, berhasil, mathError, &temp1);
     if (*berhasil)
     {
-        *hasilHitung = (long double complex)temp1;
+        *hasilHitung = temp1;
         char c = s[*letak];
         if (c == '.')
         {
             int cekPanjang = *letak;
             *letak += 1;
-            long int temp2 = 0;
+            long double complex temp2 = 0;
             funcUnsigned(s, letak, berhasil, mathError, &temp2);
             if (*berhasil)
             {
@@ -325,7 +327,7 @@ void funcBilangan(char s[], int *letak, boolean *berhasil, boolean *mathError, l
                 long double complex bilKoma = temp2;
                 while (cekPanjang > 1)
                 {
-                    bilKoma /= 10;
+                    bilKoma /= (10+0*I);
                     cekPanjang -= 1;
                 }
                 *hasilHitung += bilKoma;
@@ -334,34 +336,34 @@ void funcBilangan(char s[], int *letak, boolean *berhasil, boolean *mathError, l
     }
 }
 
-void funcUnsigned(char s[], int *letak, boolean *berhasil, boolean *mathError, long int *hasilHitung)
+void funcUnsigned(char s[], int *letak, boolean *berhasil, boolean *mathError, long double complex *hasilHitung)
 {
     // U -> D | DU
     int letakAwal = *letak;
-    int temp = 0;
+    long double complex temp = 0;
     funcDigit(s, letak, berhasil, mathError, &temp);
     boolean dummy = true;
     while (dummy && *berhasil)
     {
-        *hasilHitung *= 10;
+        *hasilHitung *= (10+0*I);
         *hasilHitung += temp;
         *letak += 1;
         funcDigit(s, letak, &dummy, mathError, &temp);
     }
 }
 
-void funcDigit(char s[], int *letak, boolean *berhasil, boolean *mathError, int *hasilHitung)
+void funcDigit(char s[], int *letak, boolean *berhasil, boolean *mathError, long double complex *hasilHitung)
 {
     // D -> 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
     char cek = s[*letak];
     *berhasil = isDigit(cek);
     if (*berhasil)
     {
-        *hasilHitung = to_int(cek);
+        *hasilHitung = to_ldc(cek);
     }
     else
     {
-        *hasilHitung = -999;
+        *hasilHitung = -999+0*I;
     }
 }
 
@@ -378,9 +380,9 @@ void eval(char s[])
             long double realPart = creall(hasil);
             long double imagPart = cimagl(hasil);
             printf("%s = ", s);
-            if (realPart != 0)
+            if (fabsl(realPart) > 0.000000000000001)
             {
-                if (imagPart != 0)
+                if (fabsl(imagPart) > 0.000000000000001)
                 {
                     printf("%.15Lf ", realPart);
                     if (imagPart < 0)
@@ -401,7 +403,7 @@ void eval(char s[])
             }
             else
             {
-                if (imagPart != 0)
+                if (fabsl(imagPart) > 0.000000000000001)
                 {
                     printf("%.15Lf i\n", imagPart);
                 }

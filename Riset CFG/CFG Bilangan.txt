@@ -85,7 +85,8 @@ Catatan :
         D = Digit (0 - 9)
 
 Test :
-Bisa (27 Testcase) :
+Bisa (28 Testcase) :
+sin(i)
 sin((3)+2i-50)
 (sin(cos((3+2))))
 (-1)^(0.5)
