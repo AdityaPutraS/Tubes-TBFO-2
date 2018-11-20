@@ -387,8 +387,8 @@ void eval(char s[])
     {
         if (!mathError)
         {
-            long double realPart = creal(hasil);
-            long double imagPart = cimag(hasil);
+            double realPart = creal(hasil);
+            double imagPart = cimag(hasil);
             printf("%s = ", s);
             if (realPart != 0)
             {
@@ -404,18 +404,18 @@ void eval(char s[])
                     {
                         printf("+");
                     }
-                    printf(" %.15Lfi\n", imagPart);
+                    printf(" %.15fi\n", imagPart);
                 }
                 else
                 {
-                    printf("%.15Lf\n", realPart);
+                    printf("%.15f\n", realPart);
                 }
             }
             else
             {
                 if (imagPart != 0)
                 {
-                    printf("%.15Lfi\n", imagPart);
+                    printf("%.15fi\n", imagPart);
                 }
                 else
                 {
