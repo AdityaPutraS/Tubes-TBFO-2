@@ -226,7 +226,9 @@ void funcFactor2(char s[], int *letak, boolean *berhasil, boolean *mathError, do
                 funcFactor2(s, letak, berhasil, mathError, &temp);
                 if (*berhasil)
                 {
-                    *hasilHitung = cpowl(*hasilHitung, temp);
+                    if (*hasilHitung==0 && temp==0)
+                      *mathError = true;
+                    else *hasilHitung = cpowl(*hasilHitung, temp);
                 }
                 else
                 {
@@ -249,7 +251,9 @@ void funcFactor2(char s[], int *letak, boolean *berhasil, boolean *mathError, do
                 funcFactor2(s, letak, berhasil, mathError, &temp);
                 if (*berhasil)
                 {
-                    *hasilHitung = cpowl(*hasilHitung, temp);
+                    if (*hasilHitung==0 && temp==0)
+                      *mathError = true;
+                    else *hasilHitung = cpowl(*hasilHitung, temp);
                 }
                 else
                 {
