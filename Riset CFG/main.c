@@ -424,8 +424,10 @@ void eval(char s[])
 
 int main()
 {
+    boolean Exit;
     char s[100] = "";
     int n = 1;
+
     printf("X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X\n");
     printf("X  ____   ___  .      .   .    .   .   ___    _    .   ___   .   .  .  __   X\n");
     printf("X |____  |___  |     /_\\  |\\  /|  /_\\   |    | \\  /_\\   |   /_\\  |\\ | | __  X\n");
@@ -435,11 +437,14 @@ int main()
     printf("X      |/ |  |\\ /   \\ |__ |\\ |_| |__ /   \\  |  |_| |\\   |__  |   |__|       X\n");
     printf("X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X\n\n");
 
-    while (pers[0] != -1)
+    Exit = false;
+    while (!Exit)
     {
         printf("Persamaan : ");
-        char pers[100][100];
-        scanf("%s", pers[0]);
-        eval(pers[0]);
+        char pers[100];
+        scanf("%s", pers);
+        if (pers[0]=='e' && pers[1]=='x' && pers[2]=='i' && pers[3]=='t')
+          Exit = true;
+        else eval(pers);
     }
 }
